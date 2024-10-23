@@ -1,0 +1,21 @@
+---
+- name: Coin verus
+  hosts: "{{ variable_host | default('web') }}"
+  become: false
+  tasks:
+    - name: Clone verus
+      git:
+        repo: https://github.com/VerusCoin/VerusCoin
+        dest: '{{ansible_env.HOME}}/VerusCoin'
+        version: v1.2.4-2
+    - name: Fetch zcash params
+      shell: ./zcutil/fetch-params.sh
+      args:
+        chdir: "{{ansible_env.HOME}}/VerusCoin"
+    - name: Build verus
+      shell: ./zcutil/build.sh -j2
+      args:
+        chdir: "{{ansible_env.HOME}}/VerusCoin"
+
+
+# variable_host from https://stackoverflow.com/a/33234120

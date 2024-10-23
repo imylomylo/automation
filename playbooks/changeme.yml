@@ -1,0 +1,20 @@
+- hosts: "{{ variable_host | default('web') }}"
+  become: yes
+  tasks:
+    - name: create the 'changeme ' user
+      user: name=changeme append=yes state=present createhome=yes shell=/bin/bash
+
+    - name: allow 'changeme' to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'changeme ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: set up automation authorized keys for the changeme user
+      authorized_key: user=changeme key="{{item}}"
+      with_file:
+        - ~/.ssh/id_automation.pub
+    - name: set up changeme authorized keys for the changeme user
+      authorized_key: user=changeme key="{{item}}"
+      with_file:
+        - ~/.ssh/id_rsa_changeme.pub

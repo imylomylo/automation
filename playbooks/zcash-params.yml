@@ -1,0 +1,21 @@
+---
+- name: zcash params
+  hosts: "{{ variable_host | default('web') }}"
+  become: false
+  tasks:
+    - name: Download fetch-params.sh
+      args:
+        chdir: "{{ansible_env.HOME}}/"
+      shell: wget -N 'https://raw.githubusercontent.com/VerusCoin/VerusCoin/refs/heads/master/zcutil/fetch-params.sh'
+    - file:
+        path: "{{ansible_env.HOME}}/fetch-params.sh"
+        owner: mylo
+        group: mylo
+        mode: 0700
+    - name: Fetch zcash params
+      shell: ./fetch-params.sh
+      args:
+        chdir: "{{ansible_env.HOME}}"
+
+
+# variable_host from https://stackoverflow.com/a/33234120

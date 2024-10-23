@@ -1,0 +1,12 @@
+untested since ubuntu18
+
+    6  sudo apt-get update && sudo apt-get upgrade
+    7  hostnamectl -set-hostname ansible
+    8  hostnamectl set-hostname ansible
+    9  sudo vim /etc/hosts
+   10  sudo reboot
+   11  sudo apt install software-properties-common
+   12  sudo apt autoremove
+   13  sudo apt-add-repository --yes --update ppa:ansible/ansible
+   14  sudo apt install ansible
+
